@@ -72,7 +72,7 @@ post '/login' do
   # log user in
   set_current_user_and_login(attempt)
   # redirect home
-  binding.pry
+  #binding.pry
   redirect '/'
 end
 
