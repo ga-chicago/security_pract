@@ -8,6 +8,7 @@ ActiveRecord::Base.establish_connection(
 
 enable :sessions
 
+set :views, File.expand_path('../views', __FILE__)
 
 # define a few session helps
 def get_current_user_if_exists
@@ -19,7 +20,7 @@ def get_current_user_if_exists
 end
 
 def log_current_user_out
-  if get_current_user_if_exists = nil
+  if get_current_user_if_exists == nil
     return false
   else
     session[:user] = nil
@@ -31,7 +32,7 @@ end
 get '/' do
   # some content
   # binding.pry
-  erb :hot_stuff
+  erb :hotstuff
 end
 
 get '/logout' do
