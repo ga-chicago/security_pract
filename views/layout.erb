@@ -21,6 +21,12 @@
       <% end %>
     </nav>
 
+    <section>
+      <% if get_app_message != nil %>
+        <%= get_app_message %>
+      <% end %>
+    </section>
+
     <%= yield %>
 
   </body>

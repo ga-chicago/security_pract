@@ -19,6 +19,10 @@ def get_current_user_if_exists
   end
 end
 
+def set_current_user_and_login(user_object)
+  session[:user] = user_object
+end
+
 def log_current_user_out
   if get_current_user_if_exists == nil
     return false
@@ -27,6 +31,19 @@ def log_current_user_out
     return true
   end
 end
+
+def set_app_message(message_text)
+  session[:message] = message_text
+end
+
+def get_app_message
+  return session[:message]
+end
+
+def clear_app_message
+  session[:message] = nil
+end
+# end helpers
 
 # routes
 get '/' do
@@ -51,15 +68,28 @@ end
 post '/login' do
   # check params
   # validate password
+  attempt = Account.authenticate(params[:username], params[:password])
   # log user in
+  set_current_user_and_login(attempt)
   # redirect home
-  # add message to session to welcome user
+  binding.pry
+  redirect '/'
 end
 
 post '/register' do
   # check params
+  # expect: `username`, `password`
+  attempt = Account.register(params[:username], params[:password])
   # validate password
-  # log user in
-  # redirect home
   # add message to session to thank user for registering
+  if (attempt == false)
+    set_app_message('A problem occured during registration. Please check yoself.')
+    # womp womp, reload view with error
+  else
+    # log user in
+    #set_app_message('Thank you, you are registered')
+    set_current_user_and_login(attempt)
+  end
+  # redirect home
+  redirect '/'
 end
